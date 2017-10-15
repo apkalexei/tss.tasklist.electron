@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TSS.Demo TaskList</title>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"> 
+ <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+ <link rel="stylesheet" type="text/css" href="css/app.css">
+</head>
+<body style="-webkit-app-region: drag;">
+  <nav>
+    <div class="nav-wrapper  teal darken-1">
+      <a class="brand-logo center">Lista de Tareas</a>   
+    </div>
+  </nav>
+  <ul class="content"></ul>
+
+  <script>
+// Para poder gestionar los mensajes asíncronos entre cada procesos (main process y renderer process)  
+    const electron = require('electron');
+
+/* Pues declaramos nuestra constante de aplicación ipcRenderer, que permite escuchar y comunicar eventos 
+   de manera asíncrona desde un proceso de representación (renderer) hasta el proceso principal.
+*/
+    const {ipcRenderer} = electron;
+
+/* Establecemos los métodos de escucha de respuestas y envío de mensajes asíncronos, 
+   en este caso nuestro index.html le asignamos un evento ipcRenderer para emitir mensajes cuando 
+   agregamos una tarea, desde task.html (entre renderer process a main process), de acuerdo a lo que 
+   espera nuestra ipcMain declarado en archivo main.js
+   Por lo que los mensajes enviados seran tomados por el main process el cual recepciona los eventos 
+   y los comparte a los renderer (ventana padre o hija) para procesar los mensajes tenerlos en memoria 
+   y establecer las acciones paraen este ejemplo, representarlos embebiéndolos en el html principal en 
+   forma de lista de opciones <ul><li> 
+   Se empieza a crear los objetos en el html de la ventana padre, el cual espera un evento y el objeto (item).
+   Referencia: https://electron.atom.io/docs/api/ipc-renderer/
+*/
+
+    const ul = document.querySelector('ul');
+
+    ipcRenderer.on('addItem', function(e, item){
+      ul.className = 'collection';
+      const li = document.createElement('li');
+      li.className = 'collection-item';
+      const itemText = document.createTextNode(item);
+
+      li.appendChild(itemText);
+      ul.appendChild(li);
+    });
+
+
+  /* Se estable el método, para enviar la respuesta del evento a Main Process a través del 
+      canal 'clearItems' indicando la limpieza de los ítems de la lista html<ul><li> 
+  */
+    ipcRenderer.on('clearItems', function(){
+      ul.className = '';
+      ul.innerHTML = '';
+    });
+
+  /* Método para el evento del doble click, el cual escucha una función para remover un 
+     ítem de la lista html <ul><li>
+  */
+    ul.addEventListener('dblclick', removeItem);
+
+    function removeItem(e){
+      event.target.remove();
+      if(ul.children.length == 0){
+        ul.className = '';
+      }
+    }
+    
+  </script>
+
+
+
+</body>
+</html>

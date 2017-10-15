@@ -1,0 +1,58 @@
+{
+  "name": "tss.task.list",
+  "version": "1.0.1",
+  "productName": "TSS.Electron.Task.List",
+  "description": "Task List desktop app construído con Electron  ",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "package-mac": "electron-packager .  --overwrite --asar --platform=darwin --arch=x64 --icon=assets/icons/mac/icon.icns --prune=true --out=dist",
+    "package-win": "electron-packager .  --overwrite --asar --platform=win32 --arch=ia32 --icon=assets/icons/win/icon.ico --prune=true --out=dist --version-string.CompanyName=TSS --version-string.FileDescription=TSS.Electron.Demo  --version-string.ProductName=\"TSS Electron Task List\"",
+    "package-linux": "electron-packager .  --overwrite --asar --platform=linux --arch=x64 --icon=assets/icons/png/icon.png --prune=true --out=dist",
+    "dev": "npm run start",
+    "prod": "npm run start",
+    "publish": "build -p always",
+    "dist": "build"
+  },
+  "license": "MIT",
+  "author": "Anatoly Pedemonte",
+  "build": {
+    "appId": "TSS.TASKLIST",
+    "asar": false,
+    "icon": "assets/icons/mac/ico.icns",
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "nsis": {
+      "createDesktopShortcut": true,
+      "installerIcon": "assets/icons/win/icon.ico"
+    },
+    "win": {
+      "icon": "assets/icons/win/icon.ico"
+    }
+  },
+  "dependencies": {
+    "asar": "^0.13.0",
+    "electron": "^1.7.9"
+  },
+  "devDependencies": {
+    "electron-packager": "^9.1.0"
+  }
+}

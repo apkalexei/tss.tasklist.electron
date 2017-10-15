@@ -1,0 +1,30 @@
+{
+    "osx" : {
+      "title": "TSS.Electron.Task.List",
+      "icon": "assets/icons/mac/ico.icns",
+      "icon-size": 128,
+      "contents": [
+        { "x": 355, "y": 125, "type": "link", "path": "/Applications" },
+        { "x": 155, "y": 125, "type": "file" }
+      ]
+    },
+    "win" : {
+      "title" : "TSS.Electron.Task.List",
+      "icon": "assets/icons/win/icon.ico"
+    }
+  }
+
+  
+
+     /*
+    "clean": "rm -rf ./dist",  
+    "clean:osx": "rm -rf ./dist/osx",
+    "clean:win": "rm -rf ./dist/win",
+
+    "pack": " npm run pack:osx && npm run pack:win",
+    "pack:osx": " electron-packager . --overwrite \"TSS.TASKLIST\" --out=dist/osx --platform=darwin --arch=x64 --version=0.1.1 --icon=assets/icons/mac/ico.icns --ignore=dist --ignore=assets --ignore=builder.json --ignore=README.md --ignore=.gitignore ",
+    "pack:win": " electron-packager . --overwrite \"TSS.TASKLIST\" --out=dist/win --platform=win32 --arch=ia32 --version=0.1.1 --icon=assets/icons/win/ico.ico --ignore=dist --ignore=assets --ignore=builder.json --ignore=README.md --ignore=.gitignore ",
+
+    "build": "npm run build:osx && npm run build:win",
+    "build:osx": "npm run pack:osx && electron-builder \"dist/osx/TSS.TASKLIST-darwin-x64/TSS.TASKLIST.app\" --platform=osx --out=\"dist/osx\" --config=builder.json",
+    "build:win": "npm run pack:win && electron-builder \"dist/win/TSS.TASKLIST-win32-ia32\" --platform=win --out=\"dist/win\" --config=builder.json"  */

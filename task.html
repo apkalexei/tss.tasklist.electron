@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Agregar Items de Tareas</title>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"> 
+   <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+   <link rel="stylesheet" type="text/css" href="css/app.css">
+</head>
+<body >
+  <div class="container">
+    <form>
+      <div>
+        
+        <div class="row">
+          
+        </div>
+        
+        <label for="item">Agregar Tareas</label>
+        
+        <input type="text" id="item" autofocus class="validate">
+       
+      </div>
+      <button class="waves-effect waves-light btn" type="submit">Agregar</button>
+      <a class="waves-effect waves-light btn"id="close" href="javascript:window.close()" >Cerrar</a>
+    </form>      
+  </div>
+
+  <script>
+    
+    /* Cargamos las API's de Electron en nuestra constante de aplicación y definimos 
+       nuestra constante como objeto instanciado ipcRenderer 
+    */
+    const electron = require('electron');
+    const {ipcRenderer} = electron;
+
+    /*  Este es otro ejemplo de como enviar eventos desde un renderer hacia el ipcMain, por el cual
+        creamos un método para el evento submit, que escucha cada vez que hacemos click en el botón de Agregar.
+        El cual define una función para agregar los ítems que escribimos en nuestro textbox
+    */
+      document.querySelector('form').addEventListener('submit', submitForm);
+ 
+      function submitForm(e){
+        e.preventDefault();
+        const item = document.querySelector('#item').value;
+        console.log(item); 
+      // Colocamos el objeto de la consola para observar los datos de los mensajes de ipcRenderer.
+     
+      /* Aquí podemos observar exactamente cómo nuestro módulo ipcRenderer que es un EventEmmiter, 
+         envía a través del mismo canal de escucha el valor de nuestro html control de tipo 
+         texbox hacía el Main Process (el objeto instanciado como ipcMain)
+         Referencia: https://electron.atom.io/docs/api/ipc-renderer/
+      */
+      ipcRenderer.send('addItem', item);
+    }
+  </script>
+</body>
+</html>
+

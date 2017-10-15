@@ -1,0 +1,21 @@
+
+html,
+body {
+    /* background: #1a1c1f;
+	background: radial-gradient(ellipse at center, #4b4b4d 0%,#121213 100%);  */
+    font-family: 'Roboto', sans-serif;
+    font-size:14px;
+    height:100%;
+    margin: 0px;
+    padding: 0px;
+   /* -webkit-app-region: drag;*/
+    
+  }
+
+  .content{
+	
+   /*color: #ececec; */
+    color: #313030;
+    font-size: 14px;
+    font-weight: bold;
+}
