@@ -19,3 +19,11 @@ body {
     font-size: 14px;
     font-weight: bold;
 }
+
+.invisible {
+    visibility: hidden;
+  }
+  
+  h3 {
+    margin-top: 2rem;
+  }

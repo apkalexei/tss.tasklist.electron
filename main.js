@@ -14,6 +14,7 @@ const {app, BrowserWindow, Menu, ipcMain} = electron;
 let mainWindow;
 let childWindow;
 
+
 // Escucha que la aplicación esté lista
 app.on('ready', function(){
   // Crea una ventana
@@ -57,7 +58,7 @@ app.on('ready', function(){
   
 });
 
-// Handler para agregar mas ventanas (windows)
+// Función handler para crea la ventana hija
 function createChildWindow(){
     childWindow = new BrowserWindow({ 
     titleBarStyle: 'hidden',  //Le damos algunas propiedades de nuestra ventana, por ejemplo ocultamos el TitleBar y sin frame.
@@ -74,7 +75,7 @@ function createChildWindow(){
    // Muestra la ventana hija cuando está cargada y lista para mostrar, invocando al evento ready-to-show
     childWindow.once('ready-to-show', () => {
         childWindow.show()
-    })
+    });
   // Y desde este método asignando al objeto, cargamos un html, que se comportará como ventana hija  
     childWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'task.html'),
@@ -91,15 +92,45 @@ function createChildWindow(){
 
 }
 
-/* Escuchamos el evento `window-all-closed` y si no estamos en Mac cerramos la aplicación
+/*************************************************************** */
+// Ventana Acerca
+function openAboutWindow() {
+  
+    let aboutWindow = new BrowserWindow({
+      parent: mainWindow,
+      modal: true,
+      show: false,
+      width: 400,
+      height: 252
+    });
+    aboutWindow.loadURL(url.format({
+      pathname: path.join(__dirname, 'about.html'),
+      protocol: 'file:',
+      slashes: true
+    }));
+    // Muestra la ventana hija cuando está cargada y lista para mostrar, invocando al evento ready-to-show
+    aboutWindow.once('ready-to-show', () => {
+      aboutWindow.show()
+    });
+
+    /* Emite el evento 'close' a través de un handler cuando la ventana esta cerrada
+       Liberamos los recursos referentes a la ventana 
+    */
+    aboutWindow.on('close', function(){
+    aboutWindow = null;
+    });
+  }
+  /*************************************************************** */
+
+  /* Escuchamos el evento `window-all-closed` y si no estamos en Mac cerramos la aplicación
    lo de Mac es debido a que en este SO es común que se pueda cerrar todas las ventanas sin cerrar
    la aplicación completa 
 */
 app.on('window-all-closed', () => {
-//	if (process.platform !== 'darwin') {
-		app.quit();
-//	}
-});
+  //	if (process.platform !== 'darwin') {
+      app.quit();
+  //	}
+  });
 
 /************************************************************************************************** */
 /* Este módulo ipcMain, API de Electron, es una instancia de la clase EventEmitter. 
@@ -143,38 +174,54 @@ ipcMain.on('addItem', function(e, item){
    Y las opciones o ítems del menu, enviarán mensajes de eventos al nuestros procesos principales 
 */
 const mainMenuTemplate =  [
- 
-  {
-    label: 'Acciones',
-    submenu:[
+  
+   {
+     label: 'Acciones',
+     submenu:[
+       {
+         label:'Agregar tarea', 
+         //La combinación de teclas son conocidos como Accelerators 
+         accelerator:process.platform == 'darwin' ? 'Alt+I' : 'Alt+I', 
+         click(){
+              createChildWindow(); // Llamamos a la función de cargar la ventana hija
+         }
+       },
+       {
+         label:'Limpiar Tareas',
+         accelerator:process.platform == 'darwin' ? 'Command+D' : 'Alt+D',
+         click(){
+         /* Envía desde el evento Click la invocación para recibir una función de eliminación 
+             de ítems a una instancia de ipcRenderer. 
+         */
+             mainWindow.webContents.send('clearItems'); // Invocamos a la función del renderer index.html
+         }
+       },
+       {
+         label: 'Salir',
+         accelerator:process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
+         click(){
+           app.quit();
+         }
+       }
+     ]
+   },
+   {
+    label: 'Ayuda',
+    submenu: [
       {
-        label:'Agregar tarea', 
-        //La combinación de teclas son conocidos como Accelerators 
-        accelerator:process.platform == 'darwin' ? 'Alt+I' : 'Alt+I', 
+        label: 'Acerca',
         click(){
-             createChildWindow(); // Llamamos a la función de cargar la ventana hija
+          openAboutWindow();
         }
       },
-      {
-        label:'Limpiar Tareas',
-        accelerator:process.platform == 'darwin' ? 'Command+D' : 'Alt+D',
-        click(){
-        /* Envía desde el evento Click la invocación para recibir una función de eliminación 
-            de ítems a una instancia de ipcRenderer. 
-        */
-            mainWindow.webContents.send('clearItems'); // Invocamos a la función del renderer index.html
-        }
-      },
-      {
-        label: 'Salir',
-        accelerator:process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
-        click(){
-          app.quit();
-        }
-      }
     ]
-  }
-];
+   }
+
+ ];
+
+    
+    
+
 
 // Si es MacOS, quitamos el menu por defecto que nos asocia, para eso agregamos solo el nonbre del APP.
 if(process.platform == 'darwin'){
