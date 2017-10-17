@@ -64,10 +64,18 @@ For Windows
 $ npm run package-win
 ```
 
+```sh
+$ yarn package-win
+```
+
 For Mac
 
 ```sh
 $ npm run package-mac
+```
+
+```sh
+$ yarn package-mac
 ```
 
 For Linux
@@ -76,19 +84,18 @@ For Linux
 $ npm run package-linux
 ```
 
-###  Create binaries for both Windows and OS X
+```sh
+$ yarn package-linux
+```
+
+###  Create binaries for both Windows and OS X (Aun no implementado)
 
 ```sh
 $ npm run pack
 ```
 
-###  Create installer for OS X
+###  Create installer for OS X (Aun no implementado)
 
 ```sh
 $ npm run build:osx
-```
-###  Start app directly
-
-```sh
-$ npm run dev  
 ```
