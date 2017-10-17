@@ -46,7 +46,7 @@ $ yarn install
 ```
 
 ### Correr la aplicación 
-To run electron
+Para ejecutar con Electron
 
 ```sh
 $ npm start
@@ -58,44 +58,29 @@ $ yarn start
 
 ### Para empaquetar la aplicación para todas las plataformas
 
-For Windows
+Para Windows
 
 ```sh
 $ npm run package-win
 ```
-
 ```sh
 $ yarn package-win
 ```
 
-For Mac
+Para Mac
 
 ```sh
 $ npm run package-mac
 ```
-
 ```sh
 $ yarn package-mac
 ```
 
-For Linux
+Para Linux
 
 ```sh
 $ npm run package-linux
 ```
-
 ```sh
 $ yarn package-linux
-```
-
-###  Create binaries for both Windows and OS X (Aun no implementado)
-
-```sh
-$ npm run pack
-```
-
-###  Create installer for OS X (Aun no implementado)
-
-```sh
-$ npm run build:osx
 ```
